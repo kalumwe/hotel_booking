@@ -1,0 +1,47 @@
+body {
+    background-image: linear-gradient(rgba(47, 23, 15, 0.2), rgba(47, 23, 15, 0.3)), url("./images/home_bg.jpg");
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+}
+
+h2 {
+    text-align: center;
+    color: #ffbb2b;
+}
+
+#click_here {
+    margin-top: 10px;
+    text-align: center;
+    
+}
+
+/*
+.well {
+    background: rgba(0, 0, 0, 0.7);
+    border: none;
+   
+}
+*/
+
+.container
+{
+    width: 60%;
+    margin-top: 10px;
+}
+
+label
+{
+    color:#ffbb2b;
+    font-size: 13px;
+    font-weight: 100;
+}
+
+.button
+{
+    
+    width: 100px;
+    float: right;
+    font-size: 13px;
+    
+}
