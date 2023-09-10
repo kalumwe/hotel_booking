@@ -56,128 +56,119 @@ $row = $query->fetch();
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     require_once './PhpSolutions/File/Upload.php';
 
-    //initialize variables
-    $add_errors = array();
-    $img_errors = array();
-    $full_pic = array();
-    $semi_pic = array();
-    $thumb = array();
-    $names1 = array();   
-//try using one variable 'loader for all 3 different objects
-    if ($_FILES['full_pic']['error'] == 0)  {
-        $loader1 = new Upload('full_pic', '../images/', 2001200); 
-        $names1 = $loader1->getFilenames();
-        $img_errors1 = $loader1->getMessages();
-    } 
+   //initializing variables
+   $add_errors = array();
+   $img_errors = array();
+   $full_pic = null;
+   $semi_pic = null;
+   $thumb = null;
+  
 //create upload object if no errors exist
-if ($_FILES['full_pic']['error'] == 0)  {
-    $loader1 = new Upload('full_pic', '../images/', 2001200); 
-    //return name of file
-    $names1 = $loader1->getFilenames();
-    //get messages
-    $img_errors1 = $loader1->getMessages();
+   if ($_FILES['full_pic']['error'] == 0)  {
+       $loader1 = new Upload('full_pic', '../images/', 2001200); 
+       //return name of file
+       $names1 = $loader1->getFilenames();
+       //get messages
+       $img_errors1 = $loader1->getMessages();
+   }
+      
+//create upload object if no errors exist
+   if ($_FILES['semi_pic']['error'] == 0)  {
+       $loader2 = new Upload('semi_pic', '../images/', 2001200); 
+       //return name of file
+       $names2 = $loader2->getFilenames(); 
+        //get messages
+       $img_errors2 = $loader2->getMessages();
+    }  
+        
+//create upload object if no errors exist
+    if ($_FILES['thumb']['error'] == 0)  {
+       $loader3 = new Upload('thumb', '../images/', 2001200);
+       //return name of file
+       $names3 = $loader3->getFilenames();
+        //get messages
+       $img_errors3 = $loader3->getMessages();
+
+    } 
+                 
+//SANITIZE, FILTER and VALIDATE user input
+   $roomname = trim($user->safe($_POST['roomname'])); 	
+if ((!empty($roomname)) && (preg_match('/[a-z0-9\s]/i',$roomname)) && (strlen($roomname) <= 30)) {				
+   //Sanitize the trimmed first name
+   $roomname = filter_var( $roomname, FILTER_SANITIZE_STRING);
+   $roomname = (filter_var($roomname, FILTER_SANITIZE_STRIPPED));
+           
+} else {	
+   $add_errors[] = 'Roomname missing. Alphabetic, numeric, space only max 30 characters';
 }
 
-//create upload object if no errors exist
-if ($_FILES['semi_pic']['error'] == 0)  {
-    $loader2 = new Upload('semi_pic', '../images/', 2001200); 
-    //return name of file
-    $names2 = $loader2->getFilenames(); 
-     //get messages
-    $img_errors2 = $loader2->getMessages();
- }  
- 
-//create upload object if no errors exist
- if ($_FILES['thumb']['error'] == 0)  {
-    $loader3 = new Upload('thumb', '../images/', 2001200);
-    //return name of file
-    $names3 = $loader3->getFilenames();
-     //get messages
-    $img_errors3 = $loader3->getMessages();
+$room_qnty = (int) trim($_POST['room_qnty']);
+          
+if ((!empty($room_qnty)) && (strlen($room_qnty) <= 3)) {					
+   //Sanitize the trimmed phone number	
+   $room_qnty = (filter_var($room_qnty, FILTER_SANITIZE_NUMBER_INT));
+   $room_qnty = (filter_var($room_qnty, FILTER_SANITIZE_STRIPPED));	
+} else {	
+   $add_errors[] = 'Missing room quantity Selection.';
+}
 
- } 
-         
-//SANITIZE, FILTER and VALIDATE user input
-     $caption = trim($_POST['caption']); 
-    if ((!empty($caption)) && (strlen($caption) <= 40)) {
-       // remove ability to create link in email
-       $patterns = array("/http/", "/https/", "/\:/","/\/\//","/www./");
-       $caption = preg_replace($patterns," ", $caption);
-       $caption = filter_var( $caption, FILTER_SANITIZE_STRING);
-       $caption = (filter_var($caption, FILTER_SANITIZE_STRIPPED));
-       } 
+$no_bed = (int) trim($_POST['no_bed']);	    		
+if ((!empty($no_bed)) && (strlen($no_bed) <= 2)) {					
+   //Sanitize the trimmed phone number	
+   $no_bed = (filter_var($no_bed, FILTER_SANITIZE_NUMBER_INT));
+   $no_bed = (filter_var($no_bed, FILTER_SANITIZE_STRIPPED));	
+} else {	
+   $add_errors[] = 'Missing number of beds Selection.';
+}
 
-    $roomname = trim($user->safe($_POST['roomname'])); 	
-    if ((!empty($roomname)) && (preg_match('/[a-z0-9\s]/i',$roomname)) && (strlen($roomname) <= 30)) {				
-        //Sanitize the trimmed first name
-        $roomname = filter_var( $roomname, FILTER_SANITIZE_STRING);
-        $roomname = (filter_var($roomname, FILTER_SANITIZE_STRIPPED));
-                
-    } else {	
-        $add_errors[] = 'Roomname missing. Alphabetic, numeric, space only max 30 characters';
-    }
-    
-    $room_qnty = (int) trim($_POST['room_qnty']);	  
-    $room_qnty = filter_var( $_POST['room_qnty'], FILTER_SANITIZE_STRING);  		
-    if ((!empty($room_qnty)) && (strlen($room_qnty) <= 3)) {					
-        //Sanitize the trimmed phone number	
-        $room_qnty = (filter_var($room_qnty, FILTER_SANITIZE_NUMBER_INT));
-        $room_qnty = (filter_var($room_qnty, FILTER_SANITIZE_STRIPPED));	
-    } else {	
-        $add_errors[] = 'Missing room quantity Selection.';
-    }
-    
-    $no_bed = (int) trim($_POST['no_bed']);
-    $no_bed = filter_var( $_POST['no_bed'], FILTER_SANITIZE_STRING);	    		
-    if ((!empty($no_bed)) && (strlen($no_bed) <= 2)) {					
-        //Sanitize the trimmed phone number	
-        $no_bed = (filter_var($no_bed, FILTER_SANITIZE_NUMBER_INT));
-        $no_bed = (filter_var($no_bed, FILTER_SANITIZE_STRIPPED));	
-    } else {	
-        $add_errors[] = 'Missing number of beds Selection.';
-    }
-    
-    
-    $bedtype = trim($user->safe($_POST['bedtype']));
-    if (!empty($bedtype)) {				
-        //Sanitize the trimmed first name
-        $bedtype = (filter_var($bedtype, FILTER_SANITIZE_STRING));	
-        $bedtype = (filter_var($bedtype, FILTER_SANITIZE_STRIPPED));		
-    } else {	
-        $add_errors[] = 'Bed type missing. ';
-    }
-    
-    $facility = trim($user->safe($_POST['facility'])); 
-        if ((!empty($facility)) && (strlen($facility) <= 200)) {
-           // remove ability to create link in email
-           $patterns = array("/http/", "/https/", "/\:/","/\/\//","/www./");
-           $facility = preg_replace($patterns," ", $facility);
-           $facility = filter_var( $facility, FILTER_SANITIZE_STRING);
-           $facility = (filter_var($facility, FILTER_SANITIZE_STRIPPED));
-           } else { // if comment not valid display error page
-            $add_errors[] = 'you forgot to enter Facilities ';
-            $add_errors[] = 'Or exceeded max number of characters';
-        }
-    
-        $price = trim($user->safe($_POST['price']));		
-    if ((!empty($price)) && (strlen($price) <= 10)) {					
-        //Sanitize the trimmed price					
-        $price = (filter_var($price, FILTER_SANITIZE_NUMBER_INT));
-        $price = preg_replace('/\D+/', '', ($price));	
-        } else {	
-        $add_errors[] = 'Price missing. Must be Numberic. Max ######.##.';
-        }
 
-        
-        $errors = array_merge($add_errors, $user->getErrors());
+$bedtype =  trim($user->safe($_POST['bedtype']));
+if (!empty($bedtype)) {				
+   //Sanitize the trimmed first name
+   $bedtype = (filter_var($bedtype, FILTER_SANITIZE_STRING));	
+   $bedtype = (filter_var($bedtype, FILTER_SANITIZE_STRIPPED));		
+} else {	
+   $add_errors[] = 'Bed type missing. ';
+}
 
-        if (empty($errors) && empty($add_errors)) {
-            if (($names1) && ($names2) && ($names3)) {
-                $full_pic = $names1[0];
-                $semi_pic = $names2[0];
-                $thumb = $names3[0];
-                //$room_id = (int) $_POST['room_cat_id'];
-            }
+$caption = trim($user->safe($_POST['caption'])); 
+   if ((!empty($caption)) && (strlen($caption) <= 40)) {
+      // remove ability to create link in email
+      $patterns = array("/http/", "/https/", "/\:/","/\/\//","/www./");
+      $caption = preg_replace($patterns," ", $caption);
+      $caption = filter_var( $caption, FILTER_SANITIZE_STRING);
+      $caption = (filter_var($caption, FILTER_SANITIZE_STRIPPED));
+   } 
+
+$facility = trim($user->safe($_POST['facility'])); 
+   if ((!empty($facility)) && (strlen($facility) <= 200)) {
+      // remove ability to create link in email
+      $patterns = array("/http/", "/https/", "/\:/","/\/\//","/www./");
+      $facility = preg_replace($patterns," ", $facility);
+      $facility = filter_var( $facility, FILTER_SANITIZE_STRING);
+      $facility = (filter_var($facility, FILTER_SANITIZE_STRIPPED));
+      } else { // if comment not valid display error page
+       $add_errors[] = 'you forgot to enter Facilities ';
+       $add_errors[] = 'Or exceeded max number of characters';
+   }
+
+   $price = trim($user->safe($_POST['price']));		
+if ((!empty($price)) && (strlen($price) <= 10)) {					
+   //Sanitize the trimmed price					
+   $price = (filter_var($price, FILTER_SANITIZE_NUMBER_INT));
+   $price = preg_replace('/\D+/', '', ($price));	
+   } else {	
+   $add_errors[] = 'Price missing. Must be Numberic. Max ######.##.';
+   }
+
+   //call function to insert data and store uploaded file names if all errors are empty
+   if (empty($errors) && (empty($add_errors)) ) {
+        if (isset($names1) && !empty($names1))
+            $full_pic = $names1[0];
+        if (isset($names2) && !empty($names2))
+            $semi_pic = $names2[0];
+        if (isset($names3) && !empty($names3))    
+            $thumb = $names3[0];
                     
         $room_id = (int) $_POST['room_id'];
        //call function or method to update data
@@ -249,23 +240,19 @@ if ($_FILES['semi_pic']['error'] == 0)  {
     $menu = 2;
     include('./include/topbar.php');
     ?>
-            <h2 class="ml-4">Edit Room Category</h2>
-            
-            <hr>
-
-            <?php
+    <h2 class="ml-4">Edit Room Category</h2>           
+        <hr>
+<?php
 //display errors if exist
 if (isset($_GET['error'])) {
-
     echo '<ul>';
-                foreach ($errors as $error) {
-                    echo "<li class='text-danger'>$error</li>";
-                }
-                echo '</ul>';
+            foreach ($errors as $error) {
+                echo "<li class='text-danger'>$error</li>";
+            }
+            echo '</ul>';
     
-    }
-    
-             if (isset($errors) && !empty($errors)) {
+    }   
+            if (isset($errors) && !empty($errors)) {
                 echo '<ul>';
                 foreach ($errors as $error) {
                     echo "<li class='text-danger'>$error</li>";
@@ -273,20 +260,17 @@ if (isset($_GET['error'])) {
                 echo '</ul>';
             }
      
-           ?>
+?>
 
 <div class="container ">
-
-<div class="card o-hidden border-0 shadow-lg my-5 ">
+  <div class="card o-hidden border-0 shadow-lg my-5 ">
     <div class="card-body p-0 ">
         <!-- Nested Row within Card Body -->
         <div class="row">
             <div class="col-lg-10 mx-auto">
                 <div class="p-5 ">
-
             <?php 
-             if ($row && !empty($row['full_pic'])) {
-                
+             if ($row && !empty($row['full_pic'])) {                
                 $image = $imageDir . basename($row['full_pic']);
                 if (file_exists($image) && is_readable($image)) {
                     $imageSize = getimagesize($image)[3];
@@ -294,24 +278,21 @@ if (isset($_GET['error'])) {
                 }
             
             if (!empty($imageSize)) { 
-
                 echo " <img class='img-fluid w-100 mx-auto rounded' src= '" .$image . "'  alt='" .$user->safe($row['caption']) . "' " .$imageSize . ">";
             } else {
-                echo "<h5 class='text-center'>no image</h5>";
-
+                echo "<img class='img-fluid w-100 mx-auto rounded image' src= '../img/image_not_available.png'  alt=''
+                style='width:100%; '>";
             }
-            ?>
+        ?>
       
-
             <form action="edit_room_cat.php" method="post" name="roomcategory" enctype="multipart/form-data"
-            onSubmit="return(validate_input());">
-                <div class="form-group mt-4">
+                 onSubmit="return(validate_input());">
+                  <div class="form-group mt-4">
                     <label for="roomname">Room Type Name:</label>
                     <input type="text" class="form-control" name="roomname" value="<?php echo $user->safe($row['roomname']); 
                     if (isset($_POST['roomname'])) echo htmlspecialchars($_POST['roomname'], ENT_QUOTES);?>" >
                     <span class="text-danger" id="error_message1"></span>
                 </div>
-
                 <div class="row">
                 <div class="col-sm-4 mb-3 mb-sm-0">
                 <div class="form-group">
@@ -331,7 +312,7 @@ if (isset($_GET['error'])) {
                     </select>
                     <span class="text-danger" id="error_message2"></span>
                 </div>
-        </div>
+                </div>
        
                 <div class="col-sm-4">
                 <div class="form-group">
@@ -342,8 +323,8 @@ if (isset($_GET['error'])) {
                       <option value="2" <?php if ((isset($_POST['no_bed'])) && ($_POST['no_bed'] == 2)) { echo "selected"; } ?>>2</option>
                     </select>
                     <span class="text-danger" id="error_message3"></span>
+                   </div>
                 </div>
-        </div>
                 <div class="col-sm-4">
                 <div class="form-group">
                     <label for="bedtype">Bed Type:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -354,13 +335,11 @@ if (isset($_GET['error'])) {
                     </select>
                     <span class="text-danger" id="error_message4"></span>
                 </div>
-        </div>
-        </div>
-
+               </div>
+              </div>
                 <div class="row">
-
-                <div class="col-sm-4 mb-3 mb-sm-0">
-                <div class="form-group">
+                  <div class="col-sm-4 mb-3 mb-sm-0">
+                   <div class="form-group">
                     <label for="full_pic">Full picture:</label>
                     <input type="file" name="full_pic" placeholder="super_delux.jpg" class="form-control">
                     <span>
@@ -370,18 +349,17 @@ if (isset($_GET['error'])) {
                             foreach ($img_errors1 as $error) {
                                 echo "<li class='list-group-item-danger'>$error</li>";
                             }
-                              echo '</ul>';
-            
+                              echo '</ul>';            
                         }
             ?>
             </span>
                 </div></div>
             <div class="col-sm-4">
             <div class="form-group">
-                    <label for="semi_pic">Semi picture:</label>
-                    <input type="file"  name="semi_pic" id="semi_pic" placeholder="_semi_super_delux.jpg" class="form-control ">
+                <label for="semi_pic">Semi picture:</label>
+                  <input type="file"  name="semi_pic" id="semi_pic" placeholder="_semi_super_delux.jpg" class="form-control ">
                     <span> 
-                        <?php
+                    <?php
                         if (isset($img_errors2) && !empty($img_errors2))  {
                             echo "<ul class='list-group'>";
                             foreach ($img_errors2 as $error) {
@@ -389,15 +367,14 @@ if (isset($_GET['error'])) {
                             }
                             echo '</ul>';
                         }
-                        ?>
+                    ?>
                         </span>
                 </div></div>
                 <div class="col-sm-4">
                 <div class="form-group">
                     <label for="thumb">Thumb picture:</label>
-                    <input type="file" name="thumb" placeholder="_thb_super_delux.jpg" class="form-control">
-                    
-                <span>
+                    <input type="file" name="thumb" placeholder="_thb_super_delux.jpg" class="form-control">                    
+                   <span>
                     <?php
                      if (isset($img_errors3) && !empty($img_errors3))  {
                         echo "<ul class='list-group'>";
@@ -408,59 +385,48 @@ if (isset($_GET['error'])) {
                     }
                     ?>
                     </span>
-                </div></div>
+                  </div></div>
                 </div>
                 
-
                 <div class="form-group">
                     <label for="caption">Caption:</label>
                     <input type="text" class="form-control form-control-user" name="caption" placeholder="super delux"
                       value = "<?php  echo $user->safe($row['caption']);
                        if (isset($_POST['caption'])) echo htmlspecialchars($_POST['caption'], ENT_QUOTES); ?>">
-                </div>
-
-                <div class="form-group">
+                  </div>
+                 <div class="form-group">
                     <label for="Facility">Facility:</label>
                     <textarea class="form-control form-control-user" rows="5" name="facility" id="facility" value = "">
                     <?php echo $user->safe(trim($row['facility'])) ?></textarea>
                         <span class="text-danger" id="error_message5"></span>
-                </div>
+                   </div>
 
-               <div class="form-group">
+                <div class="form-group">
                     <label for="price">Price Per Night:</label>
                     <input type="text" class="form-control form-control-user" name="price" 
                      value = "<?php echo $user->safe($row['price']); if (isset($_POST['price'])) echo $user->safe($_POST['price']); ?>">
                      <span class="text-danger" id="error_message6"></span>
-                </div>
-
+                 </div>
 
                 <input type="hidden" name="room_id" value="<?php echo (int) $row['room_cat_id']; ?>">
-
                 <button type="submit" class="btn btn-lg btn-primary button btn-user btn-block" name="submit">Update</button>
-
-               <br>
+                  <br>
                 <div id="click_here" class="d-flex justify-content-center">
                     <a href="../admin.php">Back to Admin Panel</a>
-                </div>
-
-
-           
+                  </div>         
                 </form>
-            <hr>
+                 <hr>
             </div>
+          </div>
+        </div>
+       </div>
+     </div>
     </div>
-    </div>
-    </div>
-    </div>
-
-       
-
-    </div>
-    </div>
+</div>
         <!-- footer -->
-     <?php
+    <?php
       include('../admin-footer.php');
-      ?>
+    ?>
     </div>
 
     <?php 

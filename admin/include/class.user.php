@@ -107,16 +107,35 @@ try {
             //function to add room info 
             public function add_room($roomname, $room_qnty, $no_bed, $bedtype, $full_pic, $semi_pic, $thumb, $caption, $facility, $price) {
                     $available = $room_qnty;
-                    $booked = 0;
-                        
-                    if ((!empty($full_pic))  && (!empty($semi_pic) ) && (!empty($thumb)) && (!empty($caption))) {
+                    $booked = 0;                        
+                    //if ((!empty($full_pic))  || (!empty($semi_pic) ) || (!empty($thumb))) {
                         $sql = 'INSERT INTO images (full_pic, semi_pic, thumb, caption)
                         VALUES (:fullpic, :semi, :thb, :caption)';
                         $stmt = $this->db->prepare($sql);
-                        $stmt->bindParam(':fullpic', $full_pic, PDO::PARAM_STR);
-                        $stmt->bindParam(':semi', $semi_pic, PDO::PARAM_STR);
-                        $stmt->bindParam(':thb', $thumb, PDO::PARAM_STR);
-                        $stmt->bindParam(':caption', $caption, PDO::PARAM_STR);
+                        if (!empty($full_pic && (isset($full_pic)))) {
+                           $stmt->bindParam(':fullpic', $full_pic, PDO::PARAM_STR);
+                        }  else {
+                            // set image_id to NULL
+                            $stmt->bindValue(':fullpic', NULL, PDO::PARAM_NULL);
+                         }
+                         if (!empty($semi_pic && (isset($semi_pic)))) {
+                            $stmt->bindParam(':semi', $semi_pic, PDO::PARAM_STR);
+                         }  else {
+                             // set image_id to NULL
+                             $stmt->bindValue(':semi', NULL, PDO::PARAM_NULL);
+                          }
+                          if (!empty($thumb && (isset($thumb)))) {
+                            $stmt->bindParam(':thb', $thumb, PDO::PARAM_STR);
+                          }  else {
+                             // set image_id to NULL
+                             $stmt->bindValue(':thb', NULL, PDO::PARAM_NULL);
+                          }
+                          if (!empty($caption && (isset($caption)))) {
+                            $stmt->bindParam(':caption', $caption, PDO::PARAM_STR);
+                           }  else {
+                             // set image_id to NULL
+                             $stmt->bindValue(':caption', NULL, PDO::PARAM_NULL);
+                          }
                         $stmt->execute();
                         // use rowCount() to get the number of affected rows
                         $imageOK = $stmt->rowCount();
@@ -126,7 +145,7 @@ try {
                            // lastInsertId() must be called on the PDO connection object
                            $image_id = $this->db->lastInsertId();
                         } //else {
-                        }
+                      //  }
                     
                     //$this->db->beginTransaction();
                     $sql="INSERT INTO room_category SET image_id=:img_id, roomname=:room, available=:avlable, 
@@ -308,77 +327,103 @@ try {
             
             //function to edit room info
             public function edit_room_cat($roomname, $room_qnty, $no_bed, $bedtype, $full_pic, $semi_pic, $thumb, 
-                $caption, $facility, $price, $room_cat, $room_id) {
+                    $caption, $facility, $price, $room_cat, $room_id) {
                     $available = $room_qnty;
-                    $booked = 0;
-                    if ((!empty($full_pic))  && (!empty($semi_pic) ) && (!empty($thumb)) && (!empty($caption))) {
-                        $sql1 = 'INSERT INTO images (full_pic, semi_pic, thumb, caption)
-                        VALUES (:fullpic, :semi, :thb, :caption)';
-                        $stmt1 = $this->db->prepare($sql1);
-                        $stmt1->bindParam(':fullpic', $full_pic, PDO::PARAM_STR);
-                        $stmt1->bindParam(':semi', $semi_pic, PDO::PARAM_STR);
-                        $stmt1->bindParam(':thb', $thumb, PDO::PARAM_STR);
-                        $stmt1->bindParam(':caption', $caption, PDO::PARAM_STR);
-                        $stmt1->execute();
-                        // use rowCount() to get the number of affected rows
-                        $imageOK = $stmt1->rowCount();
-                       
-                        // get the image's primary key or find out what went wrong
-                       if ($imageOK) {
-                           // lastInsertId() must be called on the PDO connection object
-                           $image_id = $this->db->lastInsertId();
-                        } 
-                    }
+                    $booked = 0;                      
+                   //retrieve user info for display      
+                   $sql1="SELECT image_id FROM room_category WHERE room_cat_id=$room_id";
+                   $query = $this->db->query($sql1);
+                   $row = $query->fetch();
+                   $result = $query->rowCount();
                     
+                   if ($result > 0) {
+                    $img_id = $row['image_id'];
+                      if ((empty($img_id) || !is_numeric($img_id))) {
+                        $sql = 'INSERT INTO images (full_pic, semi_pic, thumb, caption)
+                        VALUES (:fullpic, :semi, :thb, :caption)';
+                      } else {
+                        $sql = "UPDATE images SET full_pic=:fullpic, semi_pic=:semi, thumb=:thb, caption=:caption WHERE image_id=$img_id";
+                      }
+                   }                    
+                    $stmt = $this->db->prepare($sql);
+                    if (!empty($full_pic && (isset($full_pic)))) {
+                       $stmt->bindParam(':fullpic', $full_pic, PDO::PARAM_STR);
+                    }  else {
+                        // set image_id to NULL
+                        $stmt->bindValue(':fullpic', NULL, PDO::PARAM_NULL);
+                     }
+                     if (!empty($semi_pic && (isset($semi_pic)))) {
+                        $stmt->bindParam(':semi', $semi_pic, PDO::PARAM_STR);
+                     }  else {
+                         // set image_id to NULL
+                         $stmt->bindValue(':semi', NULL, PDO::PARAM_NULL);
+                      }
+                      if (!empty($thumb && (isset($thumb)))) {
+                        $stmt->bindParam(':thb', $thumb, PDO::PARAM_STR);
+                      }  else {
+                         // set image_id to NULL
+                         $stmt->bindValue(':thb', NULL, PDO::PARAM_NULL);
+                      }
+                    if (!empty($caption && (isset($caption)))) {
+                        $stmt->bindParam(':caption', $caption, PDO::PARAM_STR);
+                       }  else {
+                         // set image_id to NULL
+                         $stmt->bindValue(':caption', NULL, PDO::PARAM_NULL);
+                      }
+                      $stmt->execute();
+
+                      if ((empty($img_id) || !is_numeric($img_id))) {
+                         $image_id = $this->db->lastInsertId();
+                      }
+                                
                    //$this->db->beginTransaction();
-                    $sql2="UPDATE room_category SET image_id=:img_id, roomname=:room, available=:avlable, 
+                    $sql="UPDATE room_category SET image_id=:img_id, roomname=:room, available=:avlable, 
                          booked=:booking, room_qnty=:qnty, no_bed=:beds, bedtype=:type, facility=:faclty, price=:Price
                          WHERE room_cat_id=:roomid";
-                    $stmt2 = $this->db->prepare($sql2);
+                    $stmt = $this->db->prepare($sql);
                    // bind parameters and insert the details into the database
                    if (isset($image_id)) {
-                    $stmt2->bindParam(':img_id', $image_id, PDO::PARAM_INT);
+                        $stmt->bindParam(':img_id', $image_id, PDO::PARAM_INT);
+                    } elseif (!empty($img_id) || is_numeric($img_id)) {
+                        $stmt->bindParam(':img_id', $img_id, PDO::PARAM_INT);
                     } else {
-                    // set image_id to NULL
-                    $stmt2->bindValue(':img_id', NULL, PDO::PARAM_NULL);
+                        // set image_id to NULL
+                        $stmt->bindValue(':img_id', NULL, PDO::PARAM_NULL);
                     }
-                   $stmt2->bindParam(':room', $roomname, PDO::PARAM_STR);
-                   $stmt2->bindParam(':avlable', $available, PDO::PARAM_INT);
-                   $stmt2->bindParam(':booking', $booked, PDO::PARAM_INT);
-                   $stmt2->bindParam(':qnty', $room_qnty, PDO::PARAM_INT);
-                   $stmt2->bindParam(':beds', $no_bed, PDO::PARAM_INT);
-                   $stmt2->bindParam(':type', $bedtype, PDO::PARAM_STR);
-                   $stmt2->bindParam(':faclty', $facility, PDO::PARAM_STR);
-                   $stmt2->bindParam(':Price', $price, PDO::PARAM_STR);
-                   $stmt2->bindParam(':roomid', $room_id, PDO::PARAM_INT);
-                   $send = $stmt2->execute();
-                   $updateOK = $stmt2->rowCount();
-                   
-                   if ($updateOK) {
-                      $cat_id =  $this->db->lastInsertId();
-                   }
-
+                   $stmt->bindParam(':room', $roomname, PDO::PARAM_STR);
+                   $stmt->bindParam(':avlable', $available, PDO::PARAM_INT);
+                   $stmt->bindParam(':booking', $booked, PDO::PARAM_INT);
+                   $stmt->bindParam(':qnty', $room_qnty, PDO::PARAM_INT);
+                   $stmt->bindParam(':beds', $no_bed, PDO::PARAM_INT);
+                   $stmt->bindParam(':type', $bedtype, PDO::PARAM_STR);
+                   $stmt->bindParam(':faclty', $facility, PDO::PARAM_STR);
+                   $stmt->bindParam(':Price', $price, PDO::PARAM_STR);
+                   $stmt->bindParam(':roomid', $room_id, PDO::PARAM_INT);
+                   $send = $stmt->execute();
+                   $updateOK = $stmt->rowCount();                  
                     if ($send) {
                         $result=" Updated Successfully!!";
                     } else {
                         $result="Sorry, Internel Error";
-                    }                                                         
-                    for($i=0;$i<$room_qnty;$i++) {
+                    }       
+                    
+                    $sql3 = "DELETE FROM room WHERE room_cat=:roomcat";
+                    $stmt3 = $this->db->prepare($sql3);
+                    $stmt3->bindParam(':roomcat', $room_cat, PDO::PARAM_STR);
+                    $stmt3->execute();
+
+                    for ($i=0;$i<$room_qnty;$i++) {
                             //$sql3="INSERT INTO room SET room_cat='$roomname', book='false'";
                             //mysqli_query($this->db,$sql3);
                             $false = 'false';
-                            $sql4 = "INSERT INTO room SET room_cat=:roomname, room_cat_id=:ct_id, book=:false";
+                            $sql4 = "INSERT INTO room SET room_cat=:roomname, book=:false";
                             $stmt4 = $this->db->prepare($sql4);
                             $stmt4->bindParam(':roomname', $roomname, PDO::PARAM_STR);
-                            $stmt4->bindParam(':ct_id', $cat_id, PDO::PARAM_INT);
                             $stmt4->bindParam(':false', $false, PDO::PARAM_STR);
                             $stmt4->execute();
 
                         }
-                        $sql3 = "DELETE FROM room WHERE room_cat=:roomcat";
-                        $stmt3 = $this->db->prepare($sql3);
-                        $stmt3->bindParam(':roomcat', $room_cat, PDO::PARAM_STR);
-                        $stmt3->execute();
+                        
                       // $done=$this->db->commit();
                         return $result;
 
@@ -407,9 +452,7 @@ try {
                     $sql = "DELETE FROM room WHERE room_cat='$roomname'";
                     $this->db->query($sql);
                     //$stmt = $this->db->prepare($sql);
-                    //$stmt->execute($roomname);
-
-                    
+                    //$stmt->execute($roomname);                   
                 }
              
                 return $result;

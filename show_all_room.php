@@ -49,26 +49,23 @@ if ($curPage >= $pages) {
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="hotel_booking" content="" />
-        <meta name="Kalu" content="" />
+    <meta name="Kalu" content="" />
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Admin-Hotel Booking</title>
  <!-- Custom fonts for this template-->
- <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link  href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <!-- Custom styles for this template-->
     <link href="css/ht-admin-2.min.css" rel="stylesheet">
-
+    <script language="javascript" type="text/javascript">
     <script language="javascript" type="text/javascript" src="my_js/global.js"></script>
     <script language="javascript" type="text/javascript" src="my_js/modal.js"></script>
-
+    </script>
 </head>
 <body id="page-top">
     <!-- Page Wrapper -->
@@ -157,7 +154,8 @@ if ($curPage >= $pages) {
                             ";
                     } 
                   } else {
-                      echo "<br><br><br><h6 class='text-center'>no image</h6><br><br><br>";
+                      echo "<img class='img-fluid w-100 mx-auto rounded image' src= 'img/image_not_available.png'  alt=''
+                     style='width:100%; '>";
                   }
                     echo " 
                     <h6 class='mt-4'>Name: ".$user->safe($row['name'])."</h6> 

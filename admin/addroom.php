@@ -29,7 +29,6 @@ if ((!$_SESSION['formStarted'])) {
     exit;
 }
 
-
 //store token if session variable is exists
 if($_SESSION['formStarted']) {
    //store session value in variable
@@ -52,10 +51,10 @@ if($_SESSION['formStarted']) {
     //initializing variables
     $add_errors = array();
     $img_errors = array();
-    $full_pic = array();
-    $semi_pic = array();
-    $thumb = array();
-    $names1 = array();  
+    $full_pic = null;
+    $semi_pic = null;
+    $thumb = null;
+    //$names1 = array();  
    
 //create upload object if no errors exist
     if ($_FILES['full_pic']['error'] == 0)  {
@@ -158,22 +157,21 @@ if ((!empty($price)) && (strlen($price) <= 10)) {
 
     //call function to insert data and store uploaded file names if all errors are empty
     if (empty($errors) && (empty($add_errors)) ) {
-        if (($names1) && ($names2) && ($names3)) {
-            $full_pic = $names1[0];
-            $semi_pic = $names2[0];
-            $thumb = $names3[0];
-        }
+      ////isset($names1) && (!empty($names1)) == $full_pic ? $names1[0] : [];
+      //isset($names2) &&(!empty($names2)) == $semi_pic ? $names2[0] : [];
+      //isset($names3) && (!empty($names3)) == $thumb ? $names3[0] :[];
+      if (isset($names1) && !empty($names1))
+          $full_pic = $names1[0];
+      if (isset($names2) && !empty($names2))
+          $semi_pic = $names2[0];
+      if (isset($names3) && !empty($names3))    
+          $thumb = $names3[0];
 
        $result = $user->add_room($roomname, $room_qnty, $no_bed, $bedtype, $full_pic, $semi_pic, $thumb, $caption, $facility, $price);
 
     }
 
-    //$safe = $user->safe();
     $errors = array_merge($add_errors, $user->getErrors());
-   // $img_errors = $loader1->getMessages();
-    //$img_errors = $loader2->getMessages();
-    //$img_errors = $loader3->getMessages();
-
 
     //display message and redirect to another page if result is true and no errors
     if (($result) && (empty($errors))) { 
@@ -184,11 +182,6 @@ if ((!empty($price)) && (strlen($price) <= 10)) {
         window.location.href = '../admin.php';
         </script>"; 
     } else {
-       //echo "<script type='text/javascript'>";
-       // foreach ($errors as $error) {
-         // echo "alert($error);
-         //</script>";
-         //echo $errors;
          $errors = array_merge($add_errors, $user->getErrors());
        }
     
@@ -211,7 +204,6 @@ if ((!empty($price)) && (strlen($price) <= 10)) {
  <?php
    $links = 2;
    include 'include/external-files.php'; ?>
-
 </head>
 
 <body id="page-top">

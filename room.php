@@ -134,8 +134,12 @@ if ($curPage >= $pages) {
                             " .$imageSize . "  style='width:100%; '></div>
                                     ";
                                 } 
+                                
                             } else {
-                                   echo "<br><br><br><br><br><br><h6 class='text-center'>no image</h6><br><br><br><br><br><br>";
+                                   echo "<div class='card-header product-img position-relative overflow-hidden bg-transparent border p-0'>
+                                   <img class='img-fluid w-100 mx-auto rounded image' src= 'img/image_not_available.png'  alt='image not available' 
+                                     style='width:100%; '></div>
+                                  ";
                                 }
                             echo "                             
                             <h6 class='descr my-3'>No of Beds: ".$user->safe($row['no_bed'])." ".$user->safe($row['bedtype'])." bed.</h6>

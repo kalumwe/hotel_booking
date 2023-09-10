@@ -117,20 +117,14 @@ if ($curPage >= $pages) {
         <meta name="Kalu" content="" />
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Admin-Hotel Booking</title>
-
    <!-- Custom fonts for this template-->
-   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
-
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link  href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <!-- Custom styles for this template-->
     <link href="css/ht-admin-2.min.css" rel="stylesheet">
-
     <script language="javascript" type="text/javascript">
-        <script language="javascript" type="text/javascript" src="my_js/global.js"></script>
-        <script language="javascript" type="text/javascript" src="my_js/modal.js"></script>
-        
+    <script language="javascript" type="text/javascript" src="my_js/global.js"></script>
+    <script language="javascript" type="text/javascript" src="my_js/modal.js"></script>       
     </script>
     
 </head>
@@ -138,21 +132,16 @@ if ($curPage >= $pages) {
 <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
-
-        <!-- nav sidebar-->
+ <!-- nav sidebar-->
     <?php 
-
     //include navigation sidebar 
     $nav = 1;
     include('admin/include/nav_sidebar.php');
-
     ?>
 <!-- Content Wrapper -->
 <div id="content-wrapper" class="d-flex flex-column">
-
 <!-- Main Content -->
 <div id="content">
-
  <!-- Topbar -->
 <?php 
    //include top nav bar

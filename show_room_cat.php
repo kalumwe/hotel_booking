@@ -162,12 +162,14 @@ if ($curPage >= $pages) {
                     }
                     if (!empty($imageSize)) {                        
                      echo "                                      
-                       <img class='img-fluid w-100 mx-auto rounded image' src= '" .$image . "'  alt='" .$user->safe($row['caption']) . "' " .$imageSize . "                   
-                            style='width:100%; '></div>
+                       <img class='img-fluid w-100 mx-auto rounded image' src= '" .$image . "'  alt='" .$user->safe($row['caption']) . "'
+                        " .$imageSize . " style='width:100%; '></div>
                             ";
                     } 
                 } else {
-                    echo "<br><br><br><h6 class='text-center'>no image</h6><br><br><br>";
+                    echo "<img class='img-fluid w-100 mx-auto rounded image' src= 'img/image_not_available.png'  alt=''
+                     style='width:100%; '></div>
+                        ";
 
                 }
                 echo " 
