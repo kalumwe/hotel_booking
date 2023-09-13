@@ -8,7 +8,7 @@ $currentPage = basename($_SERVER['SCRIPT_FILENAME']);
 <!-- Navigation-->
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
     <div class="container">
-        <a class="navbar-brand" href="//localhost:8080/hotel/index.php"><h5>KaluHotel</a></h5>               
+        <a class="navbar-brand " href="//localhost:8080/hotel/index.php"><h5 style="letter-spacing: 3px;">KaluHotel</h5> </a>              
             <button class="navbar-toggler ml-5" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 Menu<i class="fas fa-bars ms-1"></i>
              </button>

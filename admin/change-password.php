@@ -84,7 +84,6 @@ $old_password = (filter_var($old_password, FILTER_SANITIZE_STRIPPED));
         $reg_errors[] = 'You forgot to enter your old password.';
     }
 
-
 // Check for a password and match against the confirmed password:
     $u_pass1 = trim($user->safe($_POST['upass1']));
     $u_pass1 = filter_var( $_POST['upass1'], FILTER_SANITIZE_STRING);
@@ -122,12 +121,9 @@ $username = $uname;
 $new_password = $pass;
 $password = $old_password;
 
-//$age = $u_age;
-
 // store error messages
 $errors1 = array_merge($reg_errors, $user->getErrors());
 $errors = array_merge($errors1, $result2);
-
 
 //call function to change password if no errors exists
 if (empty($errors)) {
@@ -146,12 +142,6 @@ if (($change) && (empty($errors))) {
     window.location.href = '../admin.php';
 </script>"; 
 } else {
-       // echo "
-//<script type='text/javascript'>
-    //alert('Registration failed! username or email already exists');
-//</script>";
-//if ($errors) {
-    //$errors=$user->getErrors();
     $errors1 = array_merge($reg_errors, $user->getErrors());
     $errors = array_merge($errors1, $result2);
  }
@@ -167,7 +157,7 @@ if (($change) && (empty($errors))) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="hotel_booking" content="" />
-        <meta name="Kalu" content="" />
+    <meta name="Kalu" content="" />
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Admin-Change Password</title>
 
@@ -197,8 +187,8 @@ if (($change) && (empty($errors))) {
  <!-- Topbar -->
  <?php 
     $menu = 2;
-   include('./include/topbar.php');
-    ?>
+    include('./include/topbar.php');
+?>
         
     <div class="container ">
         <h2 class="ml-5 pt-5">Change Password</h2>
@@ -214,18 +204,15 @@ if (($change) && (empty($errors))) {
                 }
                 echo '</ul>';
             }
-
             if (isset($dperror))  {       
                 echo "<span>$dperror</span>";
-            }
-               
+            }              
             //dispay message if pass changed
             if (($change) && (empty($errors))) { 
                 echo "<p class='text-success'>$done</p>";
             }
  
-    ?>
-         
+    ?>        
         <!-- Nested Row within Card Body -->
         <div class="row d-flex align-content-center justify-content-center">
             <div class="col-lg-9 mx-auto ">
@@ -273,16 +260,16 @@ if (($change) && (empty($errors))) {
                        }
                        echo '</ul>';
                      }?></span>
-                </div>
+                   </div>
               
-               <div class="form-group">
+                  <div class="form-group">
                     <label for="upass2">Confirm Password:</label>
                     <input type="text" class="form-control form-control-user" name="upass2"  id="upass2"
                     value = "<?php if (isset($_POST['upass2'])) echo htmlspecialchars($_POST['upass2'], ENT_QUOTES); ?>"
                     onBlur = "disappear()"  minlength="8" maxlength="12" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,12}"
                      title="One number, one upper, one lower, one special, with 8 to 12 characters" >
                         <span class="text-danger" id="error_message4"></span>
-                </div>
+                   </div>
                
                 <input type="hidden" name="hotel_sess_token" value="<?= $sessionToken ?>">
                 <div class="d-flex justify-content-center">
@@ -292,17 +279,15 @@ if (($change) && (empty($errors))) {
                 <div id="click_here">
                     <a href="../admin.php">Back to Admin Panel</a>
                 </div>
-            </form>
+             </form>
             <hr>
+          </div>
         </div>
+       </div>
+      </div>
     </div>
-    </div>
-    </div>
-    </div>
-
-        </div>
-           
-    </div>
+  </div>          
+</div>
 
     <!-- footer -->
     <?php

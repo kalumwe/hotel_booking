@@ -18,7 +18,6 @@ if (isset($_GET['roomname']) && (!$_POST))  {
     } else {
       header("Location: http://localhost:8080/hotel/room.php");   
    }
-
 //image location
 $imageDir = './images/';
   
@@ -62,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <?php
         $menu = 2;
         include('admin/include/header.php');
-        ?>        
+    ?>        
     <div class="container mt-5 mb-5">
     <!-- Nested Row within Card Body -->
     <div class="row ">
@@ -88,7 +87,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             ";
                  } 
             } else {
-                echo "<br><br><br><h6 class='text-center'>no image</h6><br><br><br>";
+                echo "<img class='img-fluid w-100 mx-auto rounded image' src= './img/image_not_available.png'  alt=''
+                      style='width:100%; '>";
 
             }
     ?>             

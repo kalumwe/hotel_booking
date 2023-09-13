@@ -190,12 +190,8 @@ if ($curPage >= $pages) {
                                 </a>
                             </div>
                             </div>
-                            </div>                        
-                           
-                            "; 
-                        
-                        }              
-                                                          
+                            </div>";                      
+                        }                                                                      
             }  else  {
                 echo "NO Data Exist";
             }
@@ -208,7 +204,6 @@ if ($curPage >= $pages) {
                  echo '<div class="col-md-7 pb-1"></div>';
             }
          }   
-
          echo '  </div>
           <div class="row d-flex align-items-center mx-auto mb-5">
           <div class="col-4 pb-1 d-flex align-items-center justify-content-center mx-auto">
@@ -240,7 +235,6 @@ if ($curPage >= $pages) {
                     <span aria-hidden="true">&raquo;</span>
                                 <span class="sr-only">Next</span></a>';
                  }
-
                 echo '</li>
                 </ul>
                </nav>
@@ -276,40 +270,35 @@ if ($curPage >= $pages) {
                     <form id="delform" method="post" action="">
                     <input name="roomname" type="hidden" value="<?=  $user->safe($row['roomname'])  ?>">
                     <input name="room_qnty" type="hidden" value="<?= (int) $row['room_qnty']  ?>">
-                    <input name="room_id" type="hidden" value="<?= (int) $row['room_cat_id']  ?>">
-                   
-                    <a href="" class='btn btn-danger' 
-                    type="submit" name="delete" id='delete' onclick="">Delete</a> 
-                    
+                    <input name="room_id" type="hidden" value="<?= (int) $row['room_cat_id']  ?>">                   
+                    <a href="" class='btn btn-danger' type="submit" name="delete" id='delete' onclick="">Delete</a>                   
                     </form>
                 </div>
             </div>
         </div>
-     </div>
-       
+      </div>      
     </div>
-    </div>
+  </div>
 <!-- /.container-fluid -->
-
-    </div>
-  <!-- End of Main Content -->
+</div>
+<!-- End of Main Content -->
   
-     <?php
-      include('admin-footer.php');
-      ?>
+<?php
+    include('admin-footer.php');
+?>
 
-    </div>
-   <!-- End of Content Wrapper -->
-    </div>
-    <!-- End of Page Wrapper -->
+</div>
+<!-- End of Content Wrapper -->
+</div>
+<!-- End of Page Wrapper -->
 
 
-    <!-- Scroll to Top Button-->
+ <!-- Scroll to Top Button-->
 <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
     
-    <?php 
+<?php 
        //js external files and plugins
        $linksJs = 1;
        include 'admin/include/js-external-links.php' ?>

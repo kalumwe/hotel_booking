@@ -114,7 +114,6 @@ if ((!empty($no_bed)) && (strlen($no_bed) <= 2)) {
 	$add_errors[] = 'Missing number of beds Selection.';
 }
 
-
 $bedtype =  trim($user->safe($_POST['bedtype']));
 if (!empty($bedtype)) {				
 	//Sanitize the trimmed first name
@@ -170,7 +169,6 @@ if ((!empty($price)) && (strlen($price) <= 10)) {
        $result = $user->add_room($roomname, $room_qnty, $no_bed, $bedtype, $full_pic, $semi_pic, $thumb, $caption, $facility, $price);
 
     }
-
     $errors = array_merge($add_errors, $user->getErrors());
 
     //display message and redirect to another page if result is true and no errors
@@ -183,8 +181,7 @@ if ((!empty($price)) && (strlen($price) <= 10)) {
         </script>"; 
     } else {
          $errors = array_merge($add_errors, $user->getErrors());
-       }
-    
+       } 
     }
                
 ?>

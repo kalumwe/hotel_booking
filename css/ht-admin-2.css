@@ -89,6 +89,10 @@ p {
   margin-bottom: 1rem;
 }
 
+.custom-letter-spacing {
+    letter-spacing: 2px; /* Adjust the value as needed */
+}
+
 abbr[title],
 abbr[data-original-title] {
   text-decoration: underline;

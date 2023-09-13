@@ -4,7 +4,6 @@
 
 //ini_set('session.httponly', true);
 //ini_set('session.secure', true);
-
  session_start();
  
 /*session_set_cookie_params([
@@ -46,7 +45,6 @@ if (!$user->get_session()) {
     header("location:http://localhost:8080/hotel/admin/login.php"); 
 } 
 
-
 //set values to session variables 
 $_SESSION['formStarted'] = true;
 $_SESSION['started'] = "admin";
@@ -58,7 +56,6 @@ if (!isset($_SESSION['hotel-sess-token'])) {
     $_SESSION[ 'hotel-sess-token'] = bin2hex(random_bytes(32));
  }
 }
-
 
 //logout if GET 'q' is set
 if (isset($_GET['q']))  { 
@@ -81,10 +78,14 @@ define('SHOWMAX', 5);
 
 // prepare SQL to get total records
 $getTotal = 'SELECT COUNT(*) FROM room_category';
-
 // submit query and store result as $totalPix
 $total = $user->db->query($getTotal);
 $totalPix = $total->fetch()[0];
+
+// prepare SQL to get total booked rooms
+$getTotalBooked = 'SELECT COUNT(*) FROM room WHERE book="true"';
+$totalBooked = $user->db->query($getTotalBooked);
+$totalBookedRooms = $totalBooked->fetch()[0];
 
 // set the current page (401)
 $curPage = (isset ($_GET['curPage'])) ? (int) $_GET['curPage'] : 0;
@@ -113,8 +114,8 @@ if ($curPage >= $pages) {
 <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="hotel_booking" content="" />
-        <meta name="Kalu" content="" />
+    <meta name="hotel_admin" content="" />
+    <meta name="Kalu" content="" />
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Admin-Hotel Booking</title>
    <!-- Custom fonts for this template-->
@@ -214,7 +215,7 @@ if ($curPage >= $pages) {
                                             </div>
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
-                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">80%</div>
+                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?= $totalBookedRooms ?></div>
                                                 </div>
                                                 <div class="col">
                                                     <div class="progress progress-sm mr-2">
@@ -287,7 +288,6 @@ if ($curPage >= $pages) {
 
 
 <?php
-
 //Dispay update message 
 if (isset($_GET['updated'])) {
     echo " <p class='text-success ml-4'>".$user->safe($_GET['roomname'])." Updated Successfully!!</p> ";
@@ -298,7 +298,6 @@ if (isset($_GET['deleted'])) {
     echo " <p class='text-warning ml-4'>".$user->safe($_GET['roomname'])." DELETED Successfully!!</p>";
 
 }
-
 ?>
 
                         <div class="card-body">
@@ -360,7 +359,6 @@ if (isset($_GET['deleted'])) {
                                 } 
                           } else {
                                    echo "<td><br><h6 class='text-center'>no image</h6><br></td>";
-
                           }
                            echo "   <td class=' pt-5'>" .$user->safe($row['roomname']). "</td>
                                     <td class=' pt-5'>" .(int) $row['room_qnty']. "</td>
@@ -436,8 +434,7 @@ if (isset($_GET['deleted'])) {
         </div>
      </div>
 
-    <?php
-                        
+    <?php                       
        } 
 
                 if (isset($_POST['delete'])) {
@@ -570,18 +567,14 @@ if (isset($_GET['deleted'])) {
    <!-- Bootstrap core JavaScript-->
    <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
     <!-- Core plugin JavaScript-->
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
     <!-- Custom scripts for all pages-->
     <script src="js/ht-admin-2.min.js"></script>
     <script src="vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
     <!-- Page level plugins -->
     <script src="js/demo/datatables-demo.js"></script>
- 
    
 </body>
 </html>

@@ -6,9 +6,9 @@ $currentPage = basename($_SERVER['SCRIPT_FILENAME']);
 <ul class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion" id="accordionSidebar">
 
 <?php
-	 switch ($nav) {
+switch ($nav) {
 	case 1: //files in root folder
-	    ?>
+?>
 
 <!-- Sidebar - Brand -->
 <a class="sidebar-brand d-flex align-items-center justify-content-center my-3" href="admin.php">
@@ -27,8 +27,6 @@ $currentPage = basename($_SERVER['SCRIPT_FILENAME']);
         <i class="fas fa-fw fa-tachometer-alt fa-beat"></i>
         <span>Dashboard</span></a>
 </li>
-
-<!-- Divider -->
 <hr class="sidebar-divider">
 
 <!-- Heading -->
@@ -57,12 +55,7 @@ Room Category
         </div>
     </div>
 </li>
-
-
-
 <!-- Bookings -->
-
-<!-- Divider -->
 <hr class="sidebar-divider">
 
 <!-- Heading -->
@@ -90,17 +83,12 @@ Room Category
         </div>
     </div>
 </li>
-
-
 <!-- Manager -->
-
-<!-- Divider -->
 <hr class="sidebar-divider">
 
 <!-- Heading -->
 <div class="sidebar-heading">
 <span>Manager</span></a>
-
 </div>
 
 
@@ -114,12 +102,7 @@ Room Category
         <i class="fas fa-solid fa-users"></i>
         <span>View Managers</span></a>
 </li>
-
-
-
 <!-- Account -->
-
-<!-- Divider -->
 <hr class="sidebar-divider">
 
 <!-- Heading -->
@@ -127,7 +110,6 @@ Room Category
 <span>Account</span></a>
 
 </div>
-
 
 <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAccount" aria-expanded="true"
@@ -144,7 +126,6 @@ Room Category
     </div>
 </li>
 
-
 <li class="nav-item">
     <a class="nav-link" href="admin.php?q=logout">
         <i class="fas fa-sign-out-alt"></i>
@@ -152,10 +133,9 @@ Room Category
 </li>
 
 <?php
-        break;	 	 
+    break;	 	 
     case 2: // files in admin folder
-	    ?>
-
+ ?>
 
 <!-- Sidebar - Brand -->
 <a class="sidebar-brand d-flex align-items-center justify-content-center my-3" href="../admin.php">
@@ -204,12 +184,7 @@ Room Category
         </div>
     </div>
 </li>
-
-
-
 <!-- Bookings -->
-
-<!-- Divider -->
 <hr class="sidebar-divider">
 
 <!-- Heading -->
@@ -237,11 +212,7 @@ Room Category
         </div>
     </div>
 </li>
-
-
 <!-- Manager -->
-
-<!-- Divider -->
 <hr class="sidebar-divider">
 
 <!-- Heading -->
@@ -261,12 +232,7 @@ Room Category
         <i class="fas fa-solid fa-users"></i>
         <span>View Managers</span></a>
 </li>
-
-
-
 <!-- Account -->
-
-<!-- Divider -->
 <hr class="sidebar-divider">
 
 <!-- Heading -->
@@ -274,7 +240,6 @@ Room Category
 <span>Account</span></a>
 
 </div>
-
 
 <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAccount" aria-expanded="true"
@@ -299,7 +264,7 @@ Room Category
 </li>
 
 
-                <?php
+    <?php
         break;
     } ?>
 
@@ -314,10 +279,8 @@ Room Category
 </div>
 
 
-
-
- <!-- Sidebar Message -->
- <div class="sidebar-card  d-lg-flex">
+    <!-- Sidebar Message -->
+    <div class="sidebar-card  d-lg-flex">
                 <img class="sidebar-card-illustration mb-2" src="img/undraw_rocket.svg" alt="...">
                 <p class="text-center mb-2"><strong>Hotel Admin Pro</strong> is packed with premium features and more!</p>
                 <a class="btn btn-success btn-sm" href="#">Subscribe for more!</a>

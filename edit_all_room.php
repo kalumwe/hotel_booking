@@ -119,7 +119,8 @@ $row = $stmt->fetch();
                             ";
                     } 
                 } else {
-                    echo "<br><br><br><h6 class='text-center'>no image</h6><br><br><br>";
+                    echo "<img class='img-fluid w-100 mx-auto rounded image' src= './img/image_not_available.png'  alt=''
+                    style='width:100%; '>";
 
                 }
             } else {

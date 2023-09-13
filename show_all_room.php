@@ -57,7 +57,7 @@ if ($curPage >= $pages) {
     <meta name="Kalu" content="" />
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Admin-Hotel Booking</title>
- <!-- Custom fonts for this template-->
+    <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link  href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <!-- Custom styles for this template-->
@@ -127,7 +127,6 @@ if ($curPage >= $pages) {
         //$result = mysqli_query($user->db, $sql);
         $sql="SELECT * FROM images as i RIGHT JOIN room_category as j ON i.image_id=j.image_id RIGHT JOIN  
           room as k ON k.room_cat_id=j.room_cat_id WHERE (k.book='true')"  ;
-
         $result = $user->db->query($sql);
         if ($result) {
             //if(mysqli_num_rows($result) > 0) {
@@ -206,13 +205,12 @@ if ($curPage >= $pages) {
         } else {
             echo "Cannot connect to server".$result;
         }
-            
+
         if (COLS-2 > 0) {
             for ($i = 0; $i < COLS-2; $i++) {
                  echo '<div class="col-md-7 pb-1"></div>';
             }
          }   
-
          echo '  </div>
           <div class="row d-flex align-items-center mx-auto mb-5">
           <div class="col-4 pb-1 d-flex align-items-center justify-content-center mx-auto">
@@ -251,7 +249,7 @@ if ($curPage >= $pages) {
                 </ul>
               </nav>
             </div>
-        </div>';
+          </div>';
 
         // Close the PDO connection at the end of the script or when it's no longer needed
          $user->db = null;
@@ -259,14 +257,14 @@ if ($curPage >= $pages) {
  ?>
          </div>
        <!-- /.container-fluid -->
-        </div>
-       <!-- End of Main Content --> 
+      </div>
+      <!-- End of Main Content --> 
     </div>
-     <!-- End of Content Wrapper -->
-    </div>
-    <!-- End of Page Wrapper -->
+    <!-- End of Content Wrapper -->
+</div>
+<!-- End of Page Wrapper -->
     
-   <!--  Modal  -->
+<!--  Modal  -->
 <div class='modal fade' id='delete_modal' role=''>
     <div class='modal-dialog'>
      
@@ -279,7 +277,7 @@ if ($curPage >= $pages) {
     <p class="warning">Please confirm that you want to delete the following item. This action cannot be undone.</p>
     
     <form id="form1" method="post" action="blog_delete_pdo_innodb.php">
-    <p>
+      <p>
         <?php //if (isset($article_id) && $article_id > 0) { ?>
             <input type="submit" name="delete" value="Confirm Deletion" class="btn btn-primary">
         <?php //} ?>
@@ -287,30 +285,26 @@ if ($curPage >= $pages) {
         <?php //if (isset($article_id) && $article_id > 0) { ?>
             <input name="article_id" type="hidden" value="<?= $article_id ?>">
         <?php// } ?>
-    </p>
-      </form>
-
+          </p>
+         </form>
          </div>
         </div>
-     </div>
+      </div>
     </div>
-
-    </div>
-    </div>
+  </div>
+ </div>
 <!-- /.container-fluid -->
+</div>
+<!-- End of Main Content -->
 
-    </div>
-  <!-- End of Main Content -->
-
-   
-     <?php
-      include('admin-footer.php');
-      ?>
-    </div>
-        <!-- End of Content Wrapper -->
-
-    </div>
-    <!-- End of Page Wrapper -->
+  
+<?php
+    include('admin-footer.php');
+?>
+</div>
+<!-- End of Content Wrapper -->
+</div>
+<!-- End of Page Wrapper -->
 
 
     <!-- Scroll to Top Button-->

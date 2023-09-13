@@ -364,7 +364,7 @@ try {
                          // set image_id to NULL
                          $stmt->bindValue(':thb', NULL, PDO::PARAM_NULL);
                       }
-                    if (!empty($caption && (isset($caption)))) {
+                     if (!empty($caption && (isset($caption)))) {
                         $stmt->bindParam(':caption', $caption, PDO::PARAM_STR);
                        }  else {
                          // set image_id to NULL
@@ -374,8 +374,7 @@ try {
 
                       if ((empty($img_id) || !is_numeric($img_id))) {
                          $image_id = $this->db->lastInsertId();
-                      }
-                                
+                      }                                
                    //$this->db->beginTransaction();
                     $sql="UPDATE room_category SET image_id=:img_id, roomname=:room, available=:avlable, 
                          booked=:booking, room_qnty=:qnty, no_bed=:beds, bedtype=:type, facility=:faclty, price=:Price
@@ -405,13 +404,11 @@ try {
                         $result=" Updated Successfully!!";
                     } else {
                         $result="Sorry, Internel Error";
-                    }       
-                    
+                    }                           
                     $sql3 = "DELETE FROM room WHERE room_cat=:roomcat";
                     $stmt3 = $this->db->prepare($sql3);
                     $stmt3->bindParam(':roomcat', $room_cat, PDO::PARAM_STR);
                     $stmt3->execute();
-
                     for ($i=0;$i<$room_qnty;$i++) {
                             //$sql3="INSERT INTO room SET room_cat='$roomname', book='false'";
                             //mysqli_query($this->db,$sql3);
@@ -421,12 +418,9 @@ try {
                             $stmt4->bindParam(':roomname', $roomname, PDO::PARAM_STR);
                             $stmt4->bindParam(':false', $false, PDO::PARAM_STR);
                             $stmt4->execute();
-
-                        }
-                        
+                        }                        
                       // $done=$this->db->commit();
                         return $result;
-
                       // Close the PDO connection at the end of the script or when it's no longer needed
                        $this->db = null;
                     

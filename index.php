@@ -270,7 +270,6 @@ const intervalId = setInterval(() => {
         <script src="js/bootstrap.min.js"></script>
         <script src="my_js/slide.js"></script>    
 </body>
-
 </html>
 
 <?php 
