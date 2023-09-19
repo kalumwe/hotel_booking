@@ -1,11 +1,10 @@
 <?php
 
+define('ERROR_LOG','C:/Temp/logs/errors.log');
 /*CLASS User Definition*/
 try {
-    //require database connection file
-    include "db_config.php";
-
-    define('ERROR_LOG','C:/Temp/logs/errors.log');
+//require database connection file
+include "db_config.php";
 
      class User {
             public $db;
@@ -15,14 +14,6 @@ try {
                 $this->db = new PDO("mysql:host=localhost;port=3307;dbname=hotel", DB_USERNAME, DB_PASSWORD);
             }
 
-
-            //email servive function
-            public function mail_to($email, $expected, $required){
-                // pattern to locate suspect phrases
-                $pattern = '/[\s\r\n]|Content-Type:|Bcc:|Cc:/i';
-                $suspect = preg_match($pattern,  $email);
-
-            }
 
             //function to register users
             public function reg_user($firstname, $lastname, $username, $password, $email, $age) {
@@ -595,19 +586,13 @@ try {
                    } else {
                     $this->errors[] = "Password couldn't be changed try again later";
                    }                    
-
-
                } else {
                 $this->errors[] = "Username and/or Password is incorrect.";
-
                }
-
                return $result;
                // Close the PDO connection at the end of the script or when it's no longer needed
                $this->db = null;
         }
-
-
     }
 
 
@@ -617,7 +602,7 @@ try {
                 // print "An Exception occurred. Message: " . $e->getMessage();
                 //print "The system is busy please again try later";
                 // $date = date('m.d.y h:i:s');                
-                // $eMessage = $date . " | Exception Error | " , $errormessage . |\n";
+                // $eMessage = $date . " | Exception Error | , " . $e->getMessage() . |\n";
                 // error_log($eMessage,3,ERROR_LOG);
                 // e-mail support person to alert there is a problem
                 // error_log("Date/Time: $date - Exception Error, Check error log for
@@ -630,14 +615,13 @@ try {
                 // print "An Error occurred. Message: " . $e->getMessage();
                 // print "The system is busy please try later";
                 // $date = date('m.d.y h:i:s');        
-                // $eMessage = $date . " | Error | " , $errormessage . |\n";
+                // $eMessage = $date . " | Error | , " . $e->getMessage() . |\n";
                 // error_log($eMessage,3,ERROR_LOG);
                 // e-mail support person to alert there is a problem
                 // error_log("Date/Time: $date - Error, Check error log for
                 //details", 1, noone@helpme.com, "Subject: Error \nFrom: Error Log
                 // <errorlog@helpme.com>" . "\r\n");
 
-    }
-        
+    }        
 
 ?>

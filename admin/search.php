@@ -1,18 +1,19 @@
 <?php
-
+ob_start();
+session_start();
 
 include_once 'include/class.user.php'; 
 $user=new User(); 
 $add_errors = array();
 $imageDir = '../images/';
-
 $missing ="";
-
-
-session_start();
 
 //define('ERROR_LOG','C:/Temp/logs/errors.log');
 
+if(empty($_GET['search']) || !isset($_GET['search'])) {
+    header("Location: http://localhost:8080/hotel/admin.php");
+}
+  
 if (!$user->get_session()) { 
     header("location:http://localhost:8080/hotel/admin/login.php"); 
 }
@@ -22,10 +23,7 @@ if ((!$_SESSION['formStarted'])) {
     exit;
 }
 
-
 try {
-//$safe = $user->safe();
-//$search = array();
 
 // define number of columns in table
 define('COLS', 3);
@@ -35,28 +33,22 @@ $pos = 0;
 $firstRow = true;
 
 // set maximum number of records
-define('SHOWMAX', 50);
+define('SHOWMAX', 30);
 
 // prepare SQL to get total records
 $getTotal = 'SELECT COUNT(*) FROM room_category';
-
 
 // submit query and store result as $totalPix
 $total = $user->db->query($getTotal);
 $totalPix = $total->fetch()[0];
 
-$search = $user->safe(trim($_POST['search']));
-$patterns = array("/http/", "/https/", "/\:/","/\/\//","/www./");
-       $search = preg_replace($patterns," ", $search);
-       $search = filter_var( $search, FILTER_SANITIZE_STRING);
-       $search = (filter_var($search, FILTER_SANITIZE_STRIPPED));
+$search = $user->safe(trim($_GET['search'])); 
 
 $searchTotal =  "SELECT COUNT(*) FROM room_category LEFT JOIN images Using (image_id) WHERE (roomname LIKE '%$search%') OR (bedtype LIKE '%$search%')
 OR (roomname LIKE '%$search%') OR (facility LIKE '%$search%')";
 // submit query and store result as $totalPix
 $total = $user->db->query($searchTotal);
 $totalSrch = $total->fetch()[0]; 
-
 
 // set the current page (401)
 $curPage = (isset ($_GET['curPage'])) ? (int) $_GET['curPage'] : 0;
@@ -75,9 +67,7 @@ if ($curPage >= $pages) {
     $curPage = 0;
 }
 
-
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -85,11 +75,10 @@ if ($curPage >= $pages) {
     <title>Admin Search Results Panel</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-      <!-- external css and js files  -->
+    <!-- external css and js files  -->
    <?php
    $links = 2;
    include './include/external-files.php'; ?>
-
   
 </head>
 
@@ -97,19 +86,16 @@ if ($curPage >= $pages) {
     <!-- Page Wrapper -->
     <div id="wrapper">
 
-         <!-- nav sidebar-->
+    <!-- nav sidebar-->
     <?php 
      $nav = 2;
     include('include/nav_sidebar.php');
     ?>
-
-
-    <!-- Content Wrapper -->
+<!-- Content Wrapper -->
 <div id="content-wrapper" class="d-flex flex-column">
 
 <!-- Main Content -->
 <div id="content">
-
 
  <!-- Topbar -->
  <?php 
@@ -119,20 +105,16 @@ if ($curPage >= $pages) {
 ?>
 
 <div class="container ">
-
-
     <div class="card-body p-0 ">
         <!-- Nested Row within Card Body -->
         <div class="row">
             <div class="col-lg-12 mx-0 p-0">
                 <div class="p-1 ">
 
-                <?php
-                $ok = false;
-
-
+    <?php
+    $ok = false;
     $search = $user->safe(trim($_GET['search']));
-    if ((!empty($search)) && (strlen($search) <= 20)) {
+    if ((!empty($search)) && (strlen($search) <= 30)) {
         // remove ability to create link in email
         $patterns = array("/http/", "/https/", "/\:/","/\/\//","/www./");
         $search = preg_replace($patterns," ", $search);
@@ -142,18 +124,11 @@ if ($curPage >= $pages) {
     }  else {	
         echo 'Search input missing or exceeded max number of characters.';
     }
-
-
     if ($ok) {
        $sql = "SELECT * FROM room_category LEFT JOIN images Using (image_id) WHERE (roomname LIKE '%$search%') OR (bedtype LIKE '%$search%')
                OR (roomname LIKE '%$search%') OR (facility LIKE '%$search%') LIMIT $startRow," . SHOWMAX;
     
-
     $result = $user->db->query($sql);
-    //$stmt = $user->db->prepare($sql);
-    //$stmt->bindParam(':srch', $search, PDO::PARAM_STR);
-    //$result = $stmt->execute();
-   
     if ($result) { ?>
 
         <!-- DataTales Example -->
@@ -161,8 +136,6 @@ if ($curPage >= $pages) {
              <div class="card-header py-3">
                  <h6 class="m-0 font-weight-bold text-primary">All Searched Rooms</h6>
              </div>
-
-
              <!--// dynamic record counter paragraph(403)-->
              <p class="mt-2 ml-4 text-dark text-muted " id="picCount">Displaying <?php echo $startRow+1;            
                         if ($startRow+1 < $totalSrch) {
@@ -174,7 +147,6 @@ if ($curPage >= $pages) {
                           }
                          }
                          echo " of $totalSrch search results.";?></p>
-
 
              <div class="card-body">
                  <div class="table-responsive">
@@ -192,7 +164,6 @@ if ($curPage >= $pages) {
                                  <th>Last Updated</th>
                                  <th>Added</th>
                                  <th>Actions</th>
-
                              </tr>
                          </thead>
                          <tfoot>
@@ -211,15 +182,10 @@ if ($curPage >= $pages) {
                                  <th>Actions</th>
                              </tr>
                          </tfoot>
-        <?php
-
-  
-        //if(mysqli_num_rows($result) > 0)
+        <?php 
          if($result->rowCount() > 0) {
            while ($row = $result->fetch()) {
-
-             echo "
-
+            echo "
              <tbody>
              <tr>";
 
@@ -228,13 +194,11 @@ if ($curPage >= $pages) {
                  if (file_exists($image) && is_readable($image)) {
                      $imageSize = getimagesize($image)[3];
                  }
-              if (!empty($imageSize)) { 
-                    
+              if (!empty($imageSize)) {                    
                  echo " 
                  <td class=''>
                  <div class='card-header product-img position-relative overflow-hidden bg-transparent border-0 p-0'>
-                 <img class='img-fluid w-100 mx-auto rounded image' src= '" .$image . "'  alt='" .$user->safe($row['caption']) . "' " .$imageSize . "
-                 
+                 <img class='img-fluid w-100 mx-auto rounded image' src= '" .$image . "'  alt='" .$user->safe($row['caption']) . "' " .$imageSize . "                
                          style='width:100%; '></div></td>
                          ";
                      } 
@@ -242,7 +206,6 @@ if ($curPage >= $pages) {
                         echo "<td><br><h6 class='text-center'>no image</h6><br></td>";
 
                      }
-
                 echo "   <td>" .$user->safe($row['roomname']). "</td>
                          <td>" .(int) $row['room_qnty']. "</td>
                          <td>" .(int) $row['available']. "</td>
@@ -281,14 +244,10 @@ if ($curPage >= $pages) {
                              <span class='text mr-1 '>Delete</span>
                          </a></li>
                          </ul>
-                        </div>
-                             
-                             </td>
-                         </tr>
-             </tbody>
-
-                
-             "; ?>
+                        </div>                            
+                        </td>
+                    </tr>
+             </tbody>  "; ?>
 
              <!-- Logout Modal-->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -315,32 +274,21 @@ aria-hidden="true">
      </div>
  </div>
 </div>
-
-
 <?php
-             
-
-
 } 
     
-
 if (isset($_POST['delete'])) {
         $room_id = (int) ($_POST['room_id']);
         $roomname = $user->safe($_POST['roomname']);
         $room_qnty = (int) ($_POST['room_qnty']);
-
-
         $deleted = $user->delete_room_cat($roomname, $room_qnty, $room_id);
-
         if ($deleted)  {
             echo 'deleted1';
             //$url = "http://localhost:8080/hotel_booking/show_room_cat.php";
             //header("Location: http://localhost:8080/hotel/admin.php?deleted=true&roomname=$roomname");
             //exit;
         }
-    
-
-}
+    }
                     } else {
                         echo "<p>NO Records found!</p>";
                     } 
@@ -349,7 +297,6 @@ if (isset($_POST['delete'])) {
                     }
                 } else {
                   
-
                 }
 
                ?>
@@ -359,24 +306,17 @@ if (isset($_POST['delete'])) {
                         </div>
                         <?php                  
                     echo ' 
-
 <div class="row d-flex align-items-center mx-auto mb-5">
 <div class="col-4 pb-1 d-flex align-items-center justify-content-center mx-auto">
 <nav aria-label="Page navigation d-flex align-items-center mx-auto ">
 &nbsp;&nbsp;&nbsp;&nbsp;<ul class="pagination d-flex align-items-center mb-3 mx-auto">
                   <li class="page-item ">';
-
-
-
-
-
-   
+  
      // create a back link if current page greater than 0
-     if ($curPage > 0) {
-      
-         echo '<a href="search.php?curPage=' . ($curPage-1) . '" class="page-link" aria-label="Previous">
+     if ($curPage > 0) {    
+         echo '<a href="search.php?search='. $search . '&curPage=' . ($curPage-1) . '" class="page-link" aria-label="Previous">
          <span aria-hidden="true">&laquo;</span>
-                      <span class="sr-only">Previous</span></a>';
+            <span class="sr-only">Previous</span></a>';
       } else {
      // otherwise leave the cell empty
       echo '&nbsp;';
@@ -386,51 +326,37 @@ if (isset($_POST['delete'])) {
         if ($i == $curPage) {
 
         echo '
-        <li class="page-item"><a class="page-link " href="search.php?curPage=' . $i-1 . '">' . $i . '</a></li>';
+        <li class="page-item"><a class="page-link " href="search.php?search='. $search . '&curPage=' . $i-1 . '">' . $i . '</a></li>';
        } else {
         echo '
       
       <li class="page-item ';  if ($i == $curPage + 1) { echo " active "; } echo'"><a class="page-link" href="search.php?curPage=' . $i-1 . '">' . $i . '</a></li>';
        }
     }
-
-      // pad the final row with empty cells if more than 2 columns(404)
-      
-
        // create a forward link if more records exist
        if ($startRow+SHOWMAX < $totalSrch) {
-          echo '<a href="search.php?curPage=' . ($curPage+1) . '" class="page-link" aria-label="Next">
+          echo '<a href="search.php?search='. $search . '&curPage=' . ($curPage+1) . '" class="page-link" aria-label="Next">
           <span aria-hidden="true">&raquo;</span>
                       <span class="sr-only">Next</span></a>';
        }// else {
        // otherwise leave the cell empty
        //echo '&nbsp;';
       //}
-
-
       echo '</li>
       </ul>
     </nav>
     </div>
     </div>
     ';
-    ?>
-
-                        
-                    </div>
+    ?>                       
+                </div>
                 <!-- /.container-fluid -->
-
-            </div>
+             </div>
             <!-- End of Main Content -->
-
-    </div>
+        </div>
         <!-- End of Content Wrapper -->
-
-
-
-    </div>
+     </div>
     <!-- End of Page Wrapper -->
-
 
 
     <!-- Scroll to Top Button-->
@@ -442,40 +368,43 @@ if (isset($_POST['delete'])) {
  <?php
       include('../admin-footer.php');
       ?>
-    
-<?php 
-                // Close the PDO connection at the end of the script or when it's no longer needed
-                $user->db = null;
 
-            }  catch(Exception $e) // We finally handle any problems here
-            {
+<?php 
+       //js external files and plugins
+       $linksJs = 1;
+       include './include/js-external-links.php' ?>   
+<?php 
+        // Close the PDO connection at the end of the script or when it's no longer needed
+        $user->db = null;
+
+        }  catch(Exception $e) // We finally handle any problems here
+        {
             // print "An Exception occurred. Message: " . $e->getMessage();
             echo "Data can't be retrieved";
             // $date = date('m.d.y h:i:s');
              echo $e->getMessage();
-            // $eMessage = $date . " | Exception Error | " , $errormessage . |\n";
+            // $eMessage = $date . " | Exception Error | ," .$e->getMessage() . |\n";
             // error_log($eMessage,3,ERROR_LOG);
              // e-mail support person to alert there is a problem
              // error_log("Date/Time: $date - Exception Error, Check error log for
             //details", 1, noone@helpme.com, "Subject: Exception Error \nFrom:
             // Error Log <errorlog@helpme.com>" . "\r\n");
-            } catch(Error $e) {
+        } catch(Error $e) {
              // print "An Error occurred. Message: " . $e->getMessage();
              echo "Data cannot be retrieved";
             // $date = date('m.d.y h:i:s');
             echo $e->getMessage();
-            // $eMessage = $date . " | Error | " , $errormessage . |\n";
+            // $eMessage = $date . " | Error | ," . $e->getMessage() . |\n";
             // error_log($eMessage,3,ERROR_LOG);
             // e-mail support person to alert there is a problem
             // error_log("Date/Time: $date - Error, Check error log for
             //details", 1, noone@helpme.com, "Subject: Error \nFrom: Error Log
             // <errorlog@helpme.com>" . "\r\n");
-            }
+       }
 ?>
 
 
 </body>
-
 </html>
 
     

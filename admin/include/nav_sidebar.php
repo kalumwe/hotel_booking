@@ -280,11 +280,11 @@ Room Category
 
 
     <!-- Sidebar Message -->
-    <div class="sidebar-card  d-lg-flex">
+    <!--<div class="sidebar-card  d-lg-flex">
                 <img class="sidebar-card-illustration mb-2" src="img/undraw_rocket.svg" alt="...">
                 <p class="text-center mb-2"><strong>Hotel Admin Pro</strong> is packed with premium features and more!</p>
                 <a class="btn btn-success btn-sm" href="#">Subscribe for more!</a>
-            </div>
+            </div>-->
 
 </ul>
 <!-- End of Sidebar -->

@@ -37,7 +37,7 @@
 	    ?>
 
 <!-- Topbar Search -->
-<form  method="post" action="./admin/search.php" name="srch"
+<form  method="get" action="./admin/search.php" name="srch" id="srch"
     class="d-none d-sm-inline-block form-inline mr-3 ml-md-3 my-2 my-md-0 mw-100 navbar-search">
     <div class="input-group">
         <input type="search"  name="search" id="search" class="form-control bg-light border-0 small" placeholder="Search for... <?php
@@ -45,7 +45,7 @@
             aria-label="Search" aria-describedby="basic-addon2" onBlur="disppear()" pattern="[^'\x22]+" title="Invalid input">
             
         <div class="input-group-append">
-            <button class="btn btn-dark" type="submit" name="submit" onclick="return(submitreg());">
+            <button class="btn btn-dark" type="submit" onclick="return(submitreg());">
                 <i class="fas fa-search fa-sm"></i>
             </button>
         </div>
@@ -60,7 +60,7 @@
 	    ?>
 
         <!-- Topbar Search -->
-<form  method="post" action="search.php" name="srch"
+<form  method="get" action="search.php" name="srch"
     class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
     <div class="input-group">
         <input type="text"  name="search" id="search" class="form-control bg-light border-0 small" placeholder="Search for... <?php
@@ -68,7 +68,7 @@
             aria-label="Search" aria-describedby="basic-addon2" onBlur="disppear()" pattern="[^'\x22]+" title="Invalid input">
             
         <div class="input-group-append">
-        <button class="btn btn-dark" type="submit" name="submit" onclick="return(submitreg());">
+        <button class="btn btn-dark" type="submit"  onclick="return(submitreg());">
                 <i class="fas fa-search fa-sm"></i>
             </button>
         </div>
